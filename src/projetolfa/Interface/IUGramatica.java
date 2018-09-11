@@ -45,10 +45,13 @@ public class IUGramatica extends javax.swing.JDialog {
         tabelaEntradas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         adcLinha = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtTeste = new javax.swing.JTextField();
         verificar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gramática Regular");
@@ -82,6 +85,13 @@ public class IUGramatica extends javax.swing.JDialog {
             }
         });
 
+        removeButton.setText("Remover Linha");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -90,14 +100,15 @@ public class IUGramatica extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 24, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(adcLinha)))
+                .addGap(43, 43, 43)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(adcLinha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(removeButton)
+                .addGap(98, 98, 98))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +118,9 @@ public class IUGramatica extends javax.swing.JDialog {
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(adcLinha)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(adcLinha)
+                    .addComponent(removeButton))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
@@ -146,6 +159,13 @@ public class IUGramatica extends javax.swing.JDialog {
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("1- Serão aceitas gramaticas onde os simbolos não terminais\nfiquem a direita. Por exemplo:\n\tS -> aA\nNo caso de lambda basta deixar a coluna do RHS vazia.\n\n2- Para remover uma linha é necessário selecionar qual deve\nser removida.\n\n3- Exemplo de regras e sentenças aceitas:\n\tS -> aA\n\tA -> xB\n\tB ->\nsetenças aceitas: \"a\" ou \"x\"\n\n\n");
+        jScrollPane2.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,18 +173,26 @@ public class IUGramatica extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(122, 122, 122))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -183,16 +211,28 @@ public class IUGramatica extends javax.swing.JDialog {
             GR gram = new GR(Desmonta(GRTableModel));
             String inicio = (String) getTabGram().getValueAt(0, 0);
             if (gram.Verif(txtTeste.getText() + "\u03BB", inicio.charAt(0), indice)) {
-                JOptionPane.showMessageDialog(null, "Entrada Válida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
                 txtTeste.setBackground(Color.green);
+                JOptionPane.showMessageDialog(null, "Entrada Válida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
+                txtTeste.setBackground(Color.white);
             } else {
-                JOptionPane.showMessageDialog(null, "Entrada Inválida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
                 txtTeste.setBackground(Color.red);
+                JOptionPane.showMessageDialog(null, "Entrada Inválida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
+                txtTeste.setBackground(Color.white);
             }
         } catch (IOException ex) {
             System.out.println("Erro");
         }
     }//GEN-LAST:event_verificarActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel)tabelaEntradas.getModel();
+        if (tabelaEntradas.getSelectedRow() >= 0){
+            dtm.removeRow(tabelaEntradas.getSelectedRow());
+            tabelaEntradas.setModel(dtm);
+        }else{
+            JOptionPane.showMessageDialog(null, "Favor selecionar uma linha para remover");
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
 
     public DefaultTableModel getTabGram() {
         return GRTableModel;
@@ -284,6 +324,9 @@ public class IUGramatica extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton removeButton;
     private javax.swing.JTable tabelaEntradas;
     private javax.swing.JTextField txtTeste;
     private javax.swing.JButton verificar;
