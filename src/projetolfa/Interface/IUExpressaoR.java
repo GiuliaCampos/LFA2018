@@ -43,6 +43,12 @@ public class IUExpressaoR extends javax.swing.JDialog {
 
         jLabel1.setText("Expressão (Começa com ^ e termina com $)");
 
+        txtExpressao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtExpressaoActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Sentença");
 
         comecar.setText("Começar");
@@ -103,6 +109,10 @@ public class IUExpressaoR extends javax.swing.JDialog {
             txtTeste.setBackground(Color.red);
         }
     }//GEN-LAST:event_comecarActionPerformed
+
+    private void txtExpressaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExpressaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtExpressaoActionPerformed
 
     /**
      * @param args the command line arguments

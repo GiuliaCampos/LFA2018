@@ -5,40 +5,98 @@
  */
 package projetolfa;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Giulia
  */
 public class Gramatica {
     
-    //private String teste;
-    private NO gramatica = null;
-    
-    
-    public void Gramatica(String letra, String regra){
-        NO novoNo = new NO();
-        //novoNo = null;
-        
-        novoNo.setLetra(letra);
-        
-        if((regra == null|| regra.trim().equals(""))){ // se for o ultimo 
-            novoNo.setProx(null);
+    ArrayList<CabecaRegra> regras = new ArrayList<>();
+
+    private boolean procuraCabeca(Character c) {
+        for (int i = 0; i < regras.size(); i++) {
+            if (regras.get(i).getSimbolo().equals(c)) {
+                return true;
+            }
         }
-        else if(regra.length() == 1){//se só houver uma letra ela será tratada como não terminal
-            NO aux = new NO();
-            aux.setLetra(regra);
-            novoNo.setProx(aux);
+        return false;
+    }
+
+    public void montaRegras(Character LHS, Character TRHS, Character NTRHS) {
+        Regra aux = null;
+        Regra novaRegra = new Regra(TRHS, NTRHS);
+
+        if (!procuraCabeca(LHS)) {
+            regras.add(new CabecaRegra(LHS));
         }
-        else{ //Aqui "regra" seria a 2 coluna, ex: aA
-            for(int i = 0; i < regra.length(); i++){ 
-                novoNo.adcFilho(regra.substring(i, i));
-                if(i == regra.length() - 1){
-                    NO aux = new NO();
-                    aux.setLetra(regra.substring(i, i));
-                    novoNo.setProx(aux);
+
+        for (int i = 0; i < regras.size(); i++) {
+            if (regras.get(i).getSimbolo().equals(LHS)) {
+                if (regras.get(i).getProx() == null) {
+                    regras.get(i).setProx(novaRegra);
+                } else {
+                    aux = regras.get(i).getProx();
+                    while (aux.getProx() != null) {
+                        aux = aux.getProx();
+                    }
+                    aux.setProx(novaRegra);
                 }
             }
         }
+    }
+
+    public String mostraRegras() {
+        Regra aux;
+        String strRegra = "";
+        for (int i = 0; i < regras.size(); i++) {
+            strRegra += regras.get(i).getSimbolo();
+            aux = regras.get(i).getProx();
+            while (aux != null) {
+                strRegra += " -> " + aux.getSimboloTerminal() + aux.getSimboloNTerminal();
+                aux = aux.getProx();
+            }
+            strRegra += "\n";
+        }
+        return strRegra;
+    }     
+
+    public void validar(String expressao) {
+
+        if (percorreRegras(0, 0, expressao)) {
+            JOptionPane.showMessageDialog(null, "Pertence");
+        }
+        JOptionPane.showMessageDialog(null, "Não pertence");
+    }
+
+    public boolean percorreRegras(int indice_e, int indice_r, String expressao) {
+        int indice_nt;
+        CabecaRegra c = regras.get(indice_r);
+        Regra aux = c.getProx();
+        char token = expressao.charAt(indice_e);
+
+        while (aux != null) {
+            if (aux.getSimboloTerminal() == '-') {
+                indice_nt = procuraNTerminal(aux.getSimboloNTerminal());
+                return percorreRegras(indice_e, indice_nt, expressao);
+            } else if (aux.getSimboloTerminal() == token) {
+                indice_nt = procuraNTerminal(aux.getSimboloNTerminal());
+                return percorreRegras(indice_e++, indice_nt, expressao);
+            }
+            aux = aux.getProx();
+        }
+        return false;
+    }
+
+    public int procuraNTerminal(char simbolo) {
+        for (int i = 0; i < regras.size(); i++) {
+            if (regras.get(i).getSimbolo() == simbolo) {
+                return i;
+            }
+        }
+        return -1;
     }
     
 }

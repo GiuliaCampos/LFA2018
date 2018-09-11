@@ -5,22 +5,30 @@
  */
 package projetolfa.Interface;
 
+import java.awt.Color;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import projetolfa.GR;
 import projetolfa.Gramatica;
-import projetolfa.NO;
+import projetolfa.RP;
 
 /**
  *
  * @author Giulia
  */
 public class IUGramatica extends javax.swing.JDialog {
-
+    DefaultTableModel GRTableModel;
+    int indice;
     /**
      * Creates new form IUGramatica
      */
     public IUGramatica(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        GRTableModel = (DefaultTableModel) tabelaEntradas.getModel();
+        
     }
 
     /**
@@ -171,23 +179,62 @@ public class IUGramatica extends javax.swing.JDialog {
     }//GEN-LAST:event_adcLinhaActionPerformed
 
     private void verificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verificarActionPerformed
-        int nLinhas = tabelaEntradas.getRowCount();
-        Gramatica gr = new Gramatica();
-        //NO novoNo = new NO();
-        for(int i = 0; i < nLinhas; i++){
-            //novoNo = null;
-            //novoNo.setLetra((String) tabelaEntradas.getValueAt(i, 1));
-           //novoNo.setFilho("a");
-           //tenho que pegar toda esse celula na linha i e coluna 2 e separar por caracter, o mais a dir por exemplo será o não terminal
-           //o ou os da esq serão terminais e serão parte do arraylist de filho
-           
-           String letra = (String) tabelaEntradas.getValueAt(i, 1);// S -> aA, aqui eu pego o S no caso
-           String regra = (String)tabelaEntradas.getValueAt(i, 2); //pego toda a string da coluna 2, no caso o aA
-           //int tamanhoRegra = regra.length(); //descubro o numero de caracteres dela
-           gr.Gramatica(letra, regra);//essa função "montará" a gramatica
+        try {
+            GR gram = new GR(Desmonta(GRTableModel));
+            String inicio = (String) getTabGram().getValueAt(0, 0);
+            if (gram.Verif(txtTeste.getText() + "\u03BB", inicio.charAt(0), indice)) {
+                JOptionPane.showMessageDialog(null, "Entrada Válida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
+                txtTeste.setBackground(Color.green);
+            } else {
+                JOptionPane.showMessageDialog(null, "Entrada Inválida", "Gramatica Regular", JOptionPane.INFORMATION_MESSAGE);
+                txtTeste.setBackground(Color.red);
+            }
+        } catch (IOException ex) {
+            System.out.println("Erro");
         }
     }//GEN-LAST:event_verificarActionPerformed
 
+    public DefaultTableModel getTabGram() {
+        return GRTableModel;
+    }
+
+    public RP[] Desmonta(DefaultTableModel mod) {
+        String aux = "", titulo = "";
+        RP prod[] = new RP[10];
+        int ind = 0;
+        for (int i = 0; i < mod.getRowCount(); i++) { //primeiro for pra percorrer a linha
+            aux = (String) mod.getValueAt(i, 1);
+            titulo = (String) mod.getValueAt(i, 0);
+            if (aux != null && titulo != null && !"".equals(aux)) {
+                if (aux.length() > 2) {
+                    aux.trim();
+                }
+                for (int j = 0; j < aux.length(); j++) { //segundo for pra percorrer a regra
+
+                    if (aux.length() > 1) {
+                        if (aux.charAt(j) != '|' && j + 1 == aux.length()) {
+                            prod[ind] = new RP(titulo.charAt(0), aux.charAt(j), '0', i);
+                        } else if (aux.charAt(j) != '|' && aux.charAt(j + 1) != '|') {
+                            prod[ind] = new RP(titulo.charAt(0), aux.charAt(j), aux.charAt(j + 1), i);
+                            j = j + 2;
+                        } else if (aux.charAt(j) != '|' && aux.charAt(j + 1) == '|') {
+                            prod[ind] = new RP(titulo.charAt(0), aux.charAt(j), '0', i);
+                            j = j + 1;
+                        } else if (aux.charAt(j) == '|') {
+                            j++;
+                        }
+                    } else {
+                        prod[ind] = new RP(titulo.charAt(0), aux.charAt(j), '0', i);
+
+                    }
+                    ind++;
+                }
+            }
+        }
+        indice = ind;
+        return prod;
+    }
+    
     /**
      * @param args the command line arguments
      */

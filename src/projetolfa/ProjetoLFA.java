@@ -21,9 +21,6 @@ public class ProjetoLFA {
         principal.setVisible(true);
         principal.setTitle("Trabalho de LFA");
         principal.toFront();
-        
-        Gramatica gr = new Gramatica();
-        gr.Gramatica("S", "aA");
     }
     
 }
